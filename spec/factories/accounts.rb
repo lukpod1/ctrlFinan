@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :account do
-    name { "MyString" }
-    balance { "9.99" }
-    user { nil }
+    name { Faker::Lorem.word }
+    balance { Faker::Number.decimal(l_digits: 2) }
+    user_id { nil }
   end
 end
