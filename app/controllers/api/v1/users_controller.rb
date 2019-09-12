@@ -1,30 +1,36 @@
 class Api::V1::UsersController < Api::V1::ApiController
+  before_action :authorize_request, except: :create
   before_action :set_user, only: [:show, :update, :destroy]
 
-  # GET /users
+  # GET api/v1/users
   def index
     @users = User.all
-    json_response(@users)
+    render json: @users, status: :ok
   end
 
-  # POST /users
+  # POST api/v1/users
   def create
-    @user = User.create!(user_params)
-    json_response(@user, :created)
+    @user = User.new(user_params)
+    if @user.save
+      json_response(@user, :created)
+    else
+      json_response(@user, :unprocessable_entity)
+    end
   end
 
-  # GET /users/:id
+  # GET api/v1/users/:id
   def show
     json_response(@user)
   end
 
-  # PUT /users/:id
+  # PUT api/v1/users/:id
   def update
-    @user.update(user_params)
-    head :no_content
+    unless @user.update(user_params)
+      json_response(@user, :unprocessable_entity)
+    end
   end
 
-  # DELETE /users/:id
+  # DELETE api/v1/users/:id
   def destroy
     @user.destroy
     head :no_content
@@ -34,7 +40,7 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   def user_params
     # whitelist params
-    params.permit(:name, :email, :password, :password_confirmation)
+    params.permit(:username, :email, :password, :password_confirmation)
   end
 
   def set_user

@@ -1,31 +1,35 @@
 class Api::V1::AccountsController < Api::V1::ApiController
   before_action :set_account, only: [:show, :update, :destroy]
-  before_action :set_user
 
-  # GET /accounts
+  # GET api/v1/accounts
   def index
-    @accounts = @user.accounts.order(:name)
-    json_response(@accounts)
+    @accounts = @current_user.accounts.order(:name)
+    render json: @accounts, status: :ok
   end
 
-  # POST /accounts
+  # POST api/v1/accounts
   def create
-    @account = Account.create!(account_params)
-    json_response(@account, :created)
+    @account = @current_user.accounts.new(account_params)
+    if @account.save
+      json_response(@account, :created)
+    else
+      json_response(@account, :unprocessable_entity)
+    end
   end
 
-  # GET /accounts/:id
+  # GET api/v1/accounts/:id
   def show
     json_response(@account)
   end
 
-  # PUT /accounts/:id
+  # PUT api/v1/accounts/:id
   def update
-    @account.update(account_params)
-    head :no_content
+    unless @account.update(account_params)
+      json_response(@account, :unprocessable_entity)
+    end
   end
 
-  # DELETE /accounts/:id
+  # DELETE api/v1/accounts/:id
   def destroy
     @account.destroy
     head :no_content
@@ -35,15 +39,11 @@ class Api::V1::AccountsController < Api::V1::ApiController
 
   def account_params
     # whitelist params
-    params.permit(:name, :email, :password, :password_confirmation)
+    params.permit(:name, :balance_cents)
   end
 
   def set_account
     @account = Account.find(params[:id])
-  end
-
-  def set_user
-    @user = User.find(params[:user_id])
   end
 
 end
