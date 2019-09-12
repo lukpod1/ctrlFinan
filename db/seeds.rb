@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 puts 'Criando usuário'
-User.create!(username: Faker::JapaneseMedia::OnePiece.character, email: 'admin@admin.com', password: "12345678", password_confirmation: "12345678" )
+User.create!(username: "admin", email: 'admin@admin.com', password: "12345678", password_confirmation: "12345678" )
 puts 'Usuário criado.'
 
 puts 'Criando contas.'

@@ -39,7 +39,7 @@ class Api::V1::AccountsController < Api::V1::ApiController
 
   def account_params
     # whitelist params
-    params.permit(:name, :balance)
+    params.permit(:name, :balance_cents)
   end
 
   def set_account
