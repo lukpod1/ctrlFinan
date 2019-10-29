@@ -7,11 +7,11 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 puts 'Criando usuário'
-User.create!(name: Faker::Name.name, email: 'admin@admin.com', password: 12345678, password_confirmation: 12345678 )
+User.create!(username: "admin", email: 'admin@admin.com', password: "12345678", password_confirmation: "12345678" )
 puts 'Usuário criado.'
 
 puts 'Criando contas.'
 10.times do
-  Account.create!(name: Faker::Lorem.word, balance: Faker::Number.decimal(l_digits: 2), user_id: User.first.id)
+  Account.create!(name: Faker::Lorem.word, balance_cents: Faker::Number.number(digits: 4), user_id: User.first.id)
 end
 puts 'Contas criadas.'
