@@ -10,8 +10,10 @@ puts 'Criando usuário'
 User.create!(username: "admin", email: 'admin@admin.com', password: "12345678", password_confirmation: "12345678" )
 puts 'Usuário criado.'
 
-puts 'Criando contas.'
-10.times do
-  Account.create!(name: Faker::Lorem.word, balance_cents: Faker::Number.number(digits: 4), user_id: User.first.id)
+if Rails.env != 'production'
+  puts 'Criando contas.'
+  10.times do
+    Account.create!(name: Faker::Lorem.word, balance_cents: Faker::Number.number(digits: 4), user_id: User.first.id)
+  end
+  puts 'Contas criadas.'
 end
-puts 'Contas criadas.'
